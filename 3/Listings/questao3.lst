@@ -1,0 +1,120 @@
+C51 COMPILER V9.59.0.0   QUESTAO3                                                          10/23/2018 17:17:12 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE QUESTAO3
+OBJECT MODULE PLACED IN .\Objects\questao3.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE questao3.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\
+                    -questao3.lst) TABS(2) OBJECT(.\Objects\questao3.obj)
+
+line level    source
+
+   1          #include<at89x52.h>
+   2          #define CAMERA1 P1_0
+   3          #define CAMERA2 P1_1
+   4          #define CAMERA3 P1_2
+   5          #define CAMERA4 P1_3
+   6          #define SALA1 P0_0
+   7          #define SALA2 P0_1
+   8          #define SALA3 P0_2
+   9          #define SALA4 P0_3
+  10           
+  11          int contador = 0;
+  12          
+  13          void alarme() interrupt 0{
+  14   1        if(SALA1 == 1 || SALA2 == 1 || SALA3 == 1 || SALA4 == 1 ){
+  15   2            P3_1 = ~P3_1;
+  16   2            P3_3 = ~P3_3;
+  17   2            P3_3 = ~P3_4;
+  18   2            P3_5 = ~P3_5;
+  19   2            P3_6 = ~P3_6;
+  20   2            P3_7 = ~P3_7;
+  21   2        }
+  22   1      }
+  23          
+  24          void pauseVCR(){
+  25   1        while(SALA1 == 0 && SALA2 == 0 && SALA3 == 0 && SALA4 == 0){
+  26   2          CAMERA1 = 0;
+  27   2          CAMERA2 = 0;
+  28   2          CAMERA3 = 0;
+  29   2          CAMERA4 = 0;
+  30   2          contador = 0;
+  31   2          if(SALA1 == 1 && SALA2 == 0 && SALA3 == 0 && SALA4 == 0){
+  32   3            contador = 60;
+  33   3            break;
+  34   3          }
+  35   2          else if(SALA1 == 0 && SALA2 == 1 && SALA3 == 0 && SALA4 == 0){
+  36   3            contador = 120; 
+  37   3            break;
+  38   3          }
+  39   2          else if(SALA1 == 0 && SALA2 == 0 && SALA3 == 1 && SALA4 == 0){
+  40   3            contador = 180;
+  41   3            break;
+  42   3          }
+  43   2          else if(SALA1 == 0 && SALA2 == 0 && SALA3 == 0 && SALA4 == 1){
+  44   3            contador = 220;
+  45   3            break;
+  46   3          }
+  47   2        }
+  48   1      }
+  49          
+  50          void vigilancia() interrupt 1{
+  51   1        TR0 = 0;
+  52   1        TH0 = 0x3C; 
+  53   1        TL0 = 0xAF;  
+  54   1        TR0 = 1; 
+C51 COMPILER V9.59.0.0   QUESTAO3                                                          10/23/2018 17:17:12 PAGE 2   
+
+  55   1        
+  56   1        if(contador == 60){ 
+  57   2          CAMERA1 = 1; 
+  58   2          CAMERA2 = 0;
+  59   2          CAMERA3 = 0;
+  60   2          CAMERA4 = 0;
+  61   2          
+  62   2        }else if(contador == 120){
+  63   2          CAMERA2 = 1;
+  64   2          CAMERA1 = 0;
+  65   2          CAMERA3 = 0;
+  66   2          CAMERA4 = 0;
+  67   2        } else if(contador == 180){
+  68   2          CAMERA3 = 1;
+  69   2          CAMERA1 = 0;
+  70   2          CAMERA2 = 0;
+  71   2          CAMERA4 = 0;
+  72   2        }else if(contador == 240){
+  73   2          CAMERA4 = 1;
+  74   2          CAMERA1 = 0;
+  75   2          CAMERA2 = 0;
+  76   2          CAMERA3 = 0;
+  77   2          contador = 0;
+  78   2        }
+  79   1        contador++;
+  80   1        pauseVCR();
+  81   1      }
+  82          
+  83          int main()
+  84          {
+  85   1          EA = 1;
+  86   1          EX0 = 1;
+  87   1          ET0 = 1;
+  88   1          TMOD = 1; 
+  89   1          TR0 = 1;
+  90   1          P1 = 0;
+  91   1          while(1)
+  92   1          {
+  93   2          }
+  94   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    244    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

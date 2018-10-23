@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\questao3.obj" 
+TO ".\Objects\questão 3" 
+PRINT(".\Listings\questão 3.m51") RAMSIZE(256) 
